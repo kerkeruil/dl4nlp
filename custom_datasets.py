@@ -1,10 +1,12 @@
 import random
 import datasets
+import pandas as pd
+import numpy as np
 
 SEPARATOR = '<<<SEP>>>'
 
 
-DATASETS = ['writing', 'english', 'german', 'pubmed']
+DATASETS = ['writing', 'english', 'german', 'pubmed', 'guardian']
 
 
 def load_pubmed(cache_dir):
@@ -87,3 +89,75 @@ def load(name, cache_dir, **kwargs):
         return load_fn(cache_dir=cache_dir, **kwargs)
     else:
         raise ValueError(f'Unknown dataset {name}')
+
+
+def create_range_point_dict(point_indices, len_sample, min_words=55, max_words=200):
+    result = {}
+    for point in point_indices:
+        max_range = len_sample - point + 1
+        if max_range < min_words:
+            result[point] = None
+        else:
+            max_range = min(max_words, max_range)
+            result[point] = max_range
+
+    if all(value is None for value in result.values()):
+        return False
+    else:
+        result = {k: v for k, v in result.items() if v is not None}
+        return result
+
+
+def sample_text(sample, min_words=55, max_words=200):
+    sample = sample.split()
+    point_indices = [i for i in range(len(sample)) if "." in sample[i]]
+
+    if len(sample) < min_words or len(point_indices) == 0:
+        return None
+
+    ranges = create_range_point_dict(point_indices, len(sample))
+
+    if ranges == False:
+        return None
+
+    # Plus one, as we want to start after a dot
+    point_chosen_begin = np.random.choice(list(ranges.keys())) + 1
+
+    # Minus one, as we want to choose the specific item
+    chosen_length = min_words if ranges[point_chosen_begin - 1] == min_words else np.random.randint(min_words, ranges[point_chosen_begin - 1])
+    point_chosen_end = point_chosen_begin + chosen_length
+
+    return ' '.join(sample[point_chosen_begin : point_chosen_end])
+
+
+def sample_beginning_text(sample):
+    sample = sample.split()
+    if len(sample) < min_words_sample:
+        return None
+
+    # Plus one, as we want to start after a dot
+    point_chosen_begin = 0
+
+    max_range = min(max_words, len(sample) - point_chosen_begin)
+
+    chosen_length = np.random.randint(min_words, max_range)
+    point_chosen_end = point_chosen_begin + chosen_length
+
+    return ' '.join(sample[point_chosen_begin : point_chosen_end])
+
+def load_guardian(cache_dir=None, min_words=55, max_words=200):
+    guardian_path = 'data/guardian_articles.csv'
+    data = pd.read_csv(guardian_path)
+    data = data.dropna()
+
+    data["sampled"] = data["bodyContent"].apply(lambda x: sample_text(x))
+    data = data.dropna()
+
+    data["sampled"] = data["sampled"].apply(lambda x: process_spaces(x))
+
+    samples = data["sampled"].values
+
+    random.seed(0)
+    random.shuffle(samples)
+
+    return samples
