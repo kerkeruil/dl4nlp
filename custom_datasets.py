@@ -145,6 +145,25 @@ def sample_beginning_text(sample):
 
     return ' '.join(sample[point_chosen_begin : point_chosen_end])
 
+
+def load_job_posts(cache_dir=None, min_words=55, max_words=200):
+    job_posts_path = 'data/monster_com-job_sample.csv'
+    data = pd.read_csv(job_posts_path)
+    data = data.dropna()
+
+    data["sampled"] = data["job_description"].apply(lambda x: sample_beginning_text(x))
+    data = data.dropna()
+
+    data["sampled"] = data["sampled"].apply(lambda x: process_spaces(x))
+
+    samples = data["sampled"].values
+
+    random.seed(0)
+    random.shuffle(samples)
+
+    return samples
+
+
 def load_guardian(cache_dir=None, min_words=55, max_words=200):
     guardian_path = 'data/guardian_articles.csv'
     data = pd.read_csv(guardian_path)
