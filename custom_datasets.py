@@ -6,7 +6,7 @@ import numpy as np
 SEPARATOR = '<<<SEP>>>'
 
 
-DATASETS = ['writing', 'english', 'german', 'pubmed', 'guardian']
+DATASETS = ['writing', 'english', 'german', 'pubmed', 'guardian', 'medical']
 
 
 def load_pubmed(cache_dir):
@@ -170,6 +170,26 @@ def load_guardian(cache_dir=None, min_words=55, max_words=200):
     data = data.dropna()
 
     data["sampled"] = data["bodyContent"].apply(lambda x: sample_text(x))
+    data = data.dropna()
+
+    data["sampled"] = data["sampled"].apply(lambda x: process_spaces(x))
+
+    samples = data["sampled"].values
+
+    random.seed(0)
+    random.shuffle(samples)
+
+    return samples
+
+
+def load_medical(cache_dir=None, min_words=55, max_words=200):
+    medical_path = 'data/train_medical.dat'
+    data = pd.read_csv(medical_path, sep='\t', header=None)
+    data.rename(columns = {0: 'conditions', 1: 'full_text'}, inplace=True)
+
+    data = data.dropna()
+
+    data["sampled"] = data["full_text"].apply(lambda x: sample_text(x))
     data = data.dropna()
 
     data["sampled"] = data["sampled"].apply(lambda x: process_spaces(x))
