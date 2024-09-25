@@ -110,7 +110,7 @@ def create_range_point_dict(point_indices, len_sample, min_words=55, max_words=2
 
 def sample_text(sample, min_words=55, max_words=200):
     sample = sample.split()
-    point_indices = [i for i in range(len(sample)) if "." in sample[i]]
+    point_indices = [i for i in range(len(sample)) if "." in sample[i] and "”" not in sample[i]]
 
     if len(sample) < min_words or len(point_indices) == 0:
         return None
