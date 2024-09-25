@@ -130,9 +130,9 @@ def sample_text(sample, min_words=55, max_words=200):
     return ' '.join(sample[point_chosen_begin : point_chosen_end])
 
 
-def sample_beginning_text(sample):
+def sample_beginning_text(sample, min_words=55, max_words=200):
     sample = sample.split()
-    if len(sample) < min_words_sample:
+    if len(sample) < min_words:
         return None
 
     # Plus one, as we want to start after a dot
