@@ -149,7 +149,7 @@ def sample_beginning_text(sample, min_words=55, max_words=200):
 def load_job_posts(cache_dir=None, min_words=55, max_words=200):
     job_posts_path = 'data/monster_com-job_sample.csv'
     data = pd.read_csv(job_posts_path)
-    data = data.dropna()
+    data = data.dropna(subset=["job_title"])
 
     data["sampled"] = data["job_description"].apply(lambda x: sample_beginning_text(x))
     data = data.dropna()
