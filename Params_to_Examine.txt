@@ -1,0 +1,5 @@
+n_samples - amount  of test data instances. -> We have to make sure we have a separate train/test split
+that stays consistent during the experiment.
+
+n_perturbation_list -> Should we use the list of values that are default or just 1 value.
+mask_filling_model_name -> t5-large or small?
