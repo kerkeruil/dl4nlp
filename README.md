@@ -1,6 +1,7 @@
 
 # DetectGPT: Zero-Shot Machine-Generated Text Detection using Probability Curvature
 
+
 ## Refactored implementation of the experiments in the [DetectGPT paper](https://arxiv.org/abs/2301.11305v1).
 
 An interactive demo of DetectGPT can be found [here](https://detectgpt.ericmitchell.ai).
@@ -18,6 +19,24 @@ An interactive demo of DetectGPT can be found [here](https://detectgpt.ericmitch
  
 
 **Note: Intermediate results are saved in `tmp_results/`. If your experiment completes successfully, the results will be moved into the `results/` directory.**
+
+
+## Instructions Deep Learning for Natural Language Processing
+1. Download the following datasets and put them in the data folder: <br/>
+[Guardian News Dataset](https://www.kaggle.com/datasets/adityakharosekar2/guardian-news-articles) <br/>
+[Job posts dataset](https://www.kaggle.com/datasets/PromptCloudHQ/us-jobs-on-monstercom) <br/>
+[Medical articles dataset](https://www.kaggle.com/datasets/chaitanyakck/medical-text/data)
+
+2. Run main.py file for the baseline models: <br/>
+`python run.py --base_model_name gpt2-medium --dataset "guardian" --scoring_model pythia-70m --mask_filling_model_name t5-small --DEVICE cuda` <br/>
+Note 1: replace the scoring_model with pythia-410m or pythia-1.4b to get the baseline results for the different models. <br/>
+Note 2: replace the dataset with "job_posts" or "medical" to get the baseline results for the different datasets.
+
+3. Run finetune.py for the different models: <br/>
+`python runFinetune.py --base_model_name gpt2-medium --dataset "guardian" --scoring_model pythia-70m --mask_filling_model_name t5-small --DEVICE cuda` <br/>
+Note 1: replace the scoring_model with pythia-410m or pythia-1.4b to get the fine-tune results for the different models. <br/>
+Note 2: replace the dataset with "job_posts" or "medical" to get the fine-tune results for the different datasets.
+
 
 ## Interpreting the results
 Once you successfully run the script, the results will be saved in the `results/` directory. The program generates various files and here is their description:
