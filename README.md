@@ -1,27 +1,10 @@
 
-# DetectGPT: Zero-Shot Machine-Generated Text Detection using Probability Curvature
+# Deep leaning for natural language processing
+In this repository we provide the code implemenation for Group 11's project on the generalisability of machine-generated text detection across multiple domains.
 
-
-## Refactored implementation of the experiments in the [DetectGPT paper](https://arxiv.org/abs/2301.11305v1).
-
-An interactive demo of DetectGPT can be found [here](https://detectgpt.ericmitchell.ai).
+Please note that the framework used in our experiment is based on the [DetectGPT paper](https://arxiv.org/abs/2301.11305v1) and the [DetectGPT repository](https://github.com/eric-mitchell/detect-gpt). The implemntation is cloned but modified to our experiments.
 
 ## Instructions
-1. First, install the Python dependencies: <br/>
-    `$ python3 -m venv env` <br/>
-    `$ source env/bin/activate` <br/>
-    `$ pip install -r requirements.txt` <br/>
-  
-2. Second, run main.py file (or any of the scripts in `paper_scripts/`): <br/>
-`python run.py --base_model_name gpt2 --mask_filling_model_name t5-small --DEVICE cuda`
-
-3. If you'd like to run the WritingPrompts experiments, you'll need to download the WritingPrompts data from [here](https://www.kaggle.com/datasets/ratthachat/writing-prompts). Save the data into a directory `data/writingPrompts`.
- 
-
-**Note: Intermediate results are saved in `tmp_results/`. If your experiment completes successfully, the results will be moved into the `results/` directory.**
-
-
-## Instructions Deep Learning for Natural Language Processing
 1. Download the following datasets and put them in the data folder: <br/>
 [Guardian News Dataset](https://www.kaggle.com/datasets/adityakharosekar2/guardian-news-articles) <br/>
 [Job posts dataset](https://www.kaggle.com/datasets/PromptCloudHQ/us-jobs-on-monstercom) <br/>
@@ -36,7 +19,6 @@ Note 2: replace the dataset with "job_posts" or "medical" to get the baseline re
 `python runFinetune.py --base_model_name gpt2-medium --dataset "guardian" --scoring_model pythia-70m --mask_filling_model_name t5-small --DEVICE cuda` <br/>
 Note 1: replace the scoring_model with pythia-410m or pythia-1.4b to get the fine-tune results for the different models. <br/>
 Note 2: replace the dataset with "job_posts" or "medical" to get the fine-tune results for the different datasets.
-
 
 ## Interpreting the results
 Once you successfully run the script, the results will be saved in the `results/` directory. The program generates various files and here is their description:
@@ -67,22 +49,3 @@ Contains unnormalized perturbation discrepancy values. The only difference is th
 
 4. **perturbation_10_z_results.json** <br/>
 Same as above but contains **normalized perturbation discrepancy** values.
-
-
-## Citing the paper
-
-If our work is useful for your own, you can cite us with the following BibTex entry:
-
-@misc{mitchell2023detectgpt,
-
-url = {https://arxiv.org/abs/2301.11305},
-
-author = {Mitchell, Eric and Lee, Yoonho and Khazatsky, Alexander and Manning, Christopher D. and Finn, Chelsea},
-
-title = {DetectGPT: Zero-Shot Machine-Generated Text Detection using Probability Curvature},
-
-publisher = {arXiv},
-
-year = {2023},
-
-}
